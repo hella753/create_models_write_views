@@ -1,0 +1,8 @@
+.idea/
+__pycache__/
+create_models_write_views/__pycache__/
+order/__pycache__/
+order/migrations/__pycache__/
+store/__pycache__/
+store/migrations/__pycache__/
+venv/
