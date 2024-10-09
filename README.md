@@ -53,16 +53,16 @@ Table Structures:
 
 **store_category:**
 
-| id | category_name | category_description | category_product_count | parent_category |
-|----|---------------|----------------------|------------------------|-----------------|
-| 1  | _name_        | _description_        | _count_                | _category_      |
+| id | category_name | category_description | parent_category_id |
+|----|---------------|----------------------|--------------------|
+| 1  | _name_        | _description_        | _category_         |
 
 
 **store_product:**
 
-| id | product_name | product_price  | product_description | product_image |
-|----|--------------|----------------|---------------------|---------------|
-| 1  | _name_       | _price_        | _description_       | _image_       |
+| id | product_name | product_description | product_image | product_price |
+|----|--------------|---------------------|---------------|---------------|
+| 1  | _name_       | _description_       | _image_       | _price_       |
 
 
 **store_product_product_category:**
@@ -74,9 +74,9 @@ Table Structures:
 
 **order_order:**
 
-| id | order_date | order_status | product_id     | product_quantity | order_total | order_customer | order_address | order_category |
-|----|------------|--------------|----------------|------------------|-------------|----------------|---------------|----------------|
-| 1  | _date_     | _status_     | _id_           |   _quantity_     | _total_     | _customer_     | _address_     | _category_     |
+| id | order_date | order_status | product_quantity | order_total | order_customer | order_address | order_customer_id | product_id_id |
+|----|------------|--------------|------------------|-------------|----------------|---------------|-------------------|---------------|
+| 1  | _date_     | _status_     |   _quantity_     | _total_     | _customer_     | _address_     | _customer_        | _product_     |
 
 
 
