@@ -44,7 +44,7 @@ create_models_write_views/
 Database name: `db` <br>
 Tables created: `store_category`, `store_product`, `store_product_product_category`(association table) and `order_order`<br>
 
-`store_product` uses many-to-many relationship and is connected to `store_category` on **product category**
+`store_product` uses many-to-many relationship and is connected to `store_category` on **product_category**
 `store_category` uses recursive (many-to-one relationship to itself) for **parent_category**<br>
 `order_order` uses many-to-one relationships and is connected to `store_product` and `User` on **product_id** 
 and **order_customer**
@@ -55,7 +55,7 @@ Table Structures:
 
 | id | category_name | category_description | parent_category_id |
 |----|---------------|----------------------|--------------------|
-| 1  | _name_        | _description_        | _category_         |
+| 1  | _name_        | _description_        | _id_               |
 
 
 **store_product:**
@@ -76,7 +76,7 @@ Table Structures:
 
 | id | order_date | order_status | product_quantity | order_total | order_customer | order_address | order_customer_id | product_id_id |
 |----|------------|--------------|------------------|-------------|----------------|---------------|-------------------|---------------|
-| 1  | _date_     | _status_     |   _quantity_     | _total_     | _customer_     | _address_     | _customer_        | _product_     |
+| 1  | _date_     | _status_     |   _quantity_     | _total_     | _customer_     | _address_     | _id_              | _id_          |
 
 
 
