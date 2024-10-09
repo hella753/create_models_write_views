@@ -47,8 +47,8 @@ def products(request):
         )
         products_dictionary["პროდუქტის კატეგორია"] = (
             cat
-            .values()
-            .first()["category_name"]
+            .first()
+            .category_name
         )
         products_list.append(products_dictionary)
         products_dictionary = {}
