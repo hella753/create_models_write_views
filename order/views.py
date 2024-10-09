@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from .models import Order
 
 
@@ -14,7 +14,6 @@ def index(request):
         }
         order_list.append(order_dict)
         order_dict = {}
-        print(order_list)
     return JsonResponse(
         order_list,
         safe=False,
