@@ -92,7 +92,7 @@ Table Structures:
 * **Product** - Can be accessed at `/product` Displays all products data in json.
 * **Product Detail Page** - Can be accessed `/product/{product_id}` and Displays the information about the individual Product in json.
 * **Order Page** - Can be accessed at `/order/` Displays short info of the orders in json.
-* **Order Detail Page** - Can be accessed at `/order/{order_id}/` Displays the details of each order in json.
+* **Order Detail Page** - Can be accessed at `/order/{order_id}/` Displays the details of individual order in json.
 * **Admin Panel** - Can be accessed at `/admin/`. Default username: `admin`, password: `admin`.
 * **Database** - sqlite3 database is used.
 
