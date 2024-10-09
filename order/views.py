@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from .models import Order
 
+
 def index(request):
     orders = Order.objects.all()
     order_list = []
@@ -12,9 +13,13 @@ def index(request):
             "პროდუქტის ID": order.product_id.id
         }
         order_list.append(order_dict)
-        order_dict={}
+        order_dict = {}
         print(order_list)
-    return JsonResponse(order_list, safe=False, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse(
+        order_list,
+        safe=False,
+        json_dumps_params={'ensure_ascii': False}
+    )
 
 
 def individual_order(request, order_id):

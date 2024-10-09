@@ -9,7 +9,9 @@ def index(request):
     for each_category in categories:
         categories_dictionary["კატეგორიის ID"] = each_category.id
         categories_dictionary["კატეგორია"] = each_category.category_name
-        categories_dictionary["კატეგორიის აღწერა"] = each_category.category_description
+        categories_dictionary["კატეგორიის აღწერა"] = (
+            each_category.category_description
+        )
         parent = each_category.parent_category
         if parent:
             categories_dictionary["ზეკატეგორიის ID"] = parent.id
@@ -17,7 +19,11 @@ def index(request):
 
         categories_list.append(categories_dictionary)
         categories_dictionary = {}
-    return JsonResponse(categories_list, safe=False, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse(
+        categories_list,
+        safe=False,
+        json_dumps_params={'ensure_ascii': False}
+    )
 
 
 def products(request):
@@ -28,34 +34,51 @@ def products(request):
         products_dictionary["პროდუქტის ID"] = product_element.id
         products_dictionary["პროდუქტის სახელი"] = product_element.product_name
         products_dictionary["პროდუქტის ფასი"] = product_element.product_price
-        products_dictionary["პროდუქტის აღწერა"] = product_element.product_description
+        products_dictionary["პროდუქტის აღწერა"] = (
+            product_element.product_description
+        )
         cat = product_element.product_category.last()
         products_dictionary["პროდუქტის კატეგორია"] = cat.category_name
         products_list.append(products_dictionary)
         products_dictionary = {}
-    return JsonResponse(products_list, safe=False, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse(
+        products_list,
+        safe=False,
+        json_dumps_params={'ensure_ascii': False}
+    )
 
 
 def category(request, category_id):
     category_element = Category.objects.get(id=category_id)
-    categories_dictionary = {"კატეგორია": category_element.category_name,
-                             "კატეგორიის აღწერა": category_element.category_description}
+    categories_dictionary = {
+        "კატეგორია": category_element.category_name,
+        "კატეგორიის აღწერა": category_element.category_description
+    }
     parent = category_element.parent_category
     if parent:
         categories_dictionary["ზეკატეგორიის ID"] = parent.id
         categories_dictionary["ზეკატეგორია"] = parent.category_name
 
-    return JsonResponse(categories_dictionary, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse(
+        categories_dictionary,
+        json_dumps_params={'ensure_ascii': False}
+    )
+
 
 def product(request, product_id):
     product_element = Product.objects.get(id=product_id)
-    product_dictionary = {"პროდუქტის სახელი": product_element.product_name,
-                             "პროდუქტის აღწერა": product_element.product_description,
-                          "პროდუქტის ფასი": product_element.product_price}
+    product_dictionary = {
+        "პროდუქტის სახელი": product_element.product_name,
+        "პროდუქტის აღწერა": product_element.product_description,
+        "პროდუქტის ფასი": product_element.product_price
+    }
     categories = product_element.product_category.all()
     category_list = []
     for cat in categories:
         category_list.append(cat.category_name)
 
     product_dictionary["პროდუქტის კატეგორიები"] = category_list
-    return JsonResponse(product_dictionary, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse(
+        product_dictionary,
+        json_dumps_params={'ensure_ascii': False}
+    )
