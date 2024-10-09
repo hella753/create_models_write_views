@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from .models import Category, Product
+from django.db.models import Max
 
 
 def index(request):
@@ -37,8 +38,18 @@ def products(request):
         products_dictionary["პროდუქტის აღწერა"] = (
             product_element.product_description
         )
-        cat = product_element.product_category.last()
-        products_dictionary["პროდუქტის კატეგორია"] = cat.category_name
+        max_cat = product_element.product_category.all().aggregate(Max("id"))
+        cat = (
+            product_element
+            .product_category
+            .all()
+            .filter(id=max_cat['id__max'])
+        )
+        products_dictionary["პროდუქტის კატეგორია"] = (
+            cat
+            .values()
+            .first()["category_name"]
+        )
         products_list.append(products_dictionary)
         products_dictionary = {}
     return JsonResponse(
