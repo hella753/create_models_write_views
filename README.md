@@ -14,7 +14,7 @@ create_models_write_views/
 │   ├── urls.py
 │   └── wsgi.py
 ├── media
-├── store
+├── order
 │   ├── admin.py
 │   ├── apps.py
 │   ├── __init__.py
@@ -24,7 +24,7 @@ create_models_write_views/
 │   ├── tests.py
 │   ├── views.py
 │   └── urls.py
-├── order
+├── store
 │   ├── admin.py
 │   ├── apps.py
 │   ├── __init__.py
@@ -45,7 +45,7 @@ Database name: `db` <br>
 Tables created: `store_category`, `store_product`, `store_product_product_category`(association table) and `order_order`<br>
 
 `store_product` uses many-to-many relationship and is connected to `store_category` on **product category**
-`store_category` uses recursive (many-to-one relationship to itself) for **parent_category**
+`store_category` uses recursive (many-to-one relationship to itself) for **parent_category**<br>
 `order_order` uses many-to-one relationships and is connected to `store_product` and `User` on **product_id** 
 and **order_customer**
 

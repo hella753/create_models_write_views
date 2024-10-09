@@ -14,7 +14,7 @@ def index(request):
         order_list.append(order_dict)
         order_dict={}
         print(order_list)
-    return JsonResponse(order_list, safe=False)
+    return JsonResponse(order_list, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 def individual_order(request, order_id):
@@ -30,4 +30,4 @@ def individual_order(request, order_id):
         "შეკვეთის მისამართი": order.order_address,
 
     }
-    return JsonResponse(order_dict, safe=False)
+    return JsonResponse(order_dict, json_dumps_params={'ensure_ascii': False})

@@ -17,7 +17,7 @@ def index(request):
 
         categories_list.append(categories_dictionary)
         categories_dictionary = {}
-    return JsonResponse(categories_list, safe=False)
+    return JsonResponse(categories_list, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 def products(request):
@@ -33,7 +33,7 @@ def products(request):
         products_dictionary["პროდუქტის კატეგორია"] = cat.category_name
         products_list.append(products_dictionary)
         products_dictionary = {}
-    return JsonResponse(products_list, safe=False)
+    return JsonResponse(products_list, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 def category(request, category_id):
@@ -45,7 +45,7 @@ def category(request, category_id):
         categories_dictionary["ზეკატეგორიის ID"] = parent.id
         categories_dictionary["ზეკატეგორია"] = parent.category_name
 
-    return JsonResponse(categories_dictionary)
+    return JsonResponse(categories_dictionary, json_dumps_params={'ensure_ascii': False})
 
 def product(request, product_id):
     product_element = Product.objects.get(id=product_id)
@@ -58,4 +58,4 @@ def product(request, product_id):
         category_list.append(cat.category_name)
 
     product_dictionary["პროდუქტის კატეგორიები"] = category_list
-    return JsonResponse(product_dictionary)
+    return JsonResponse(product_dictionary, json_dumps_params={'ensure_ascii': False})
