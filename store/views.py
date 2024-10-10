@@ -44,7 +44,7 @@ def products(request):
             product_element.product_description
         )
         if product_element.product_image:
-            image = f"{request.get_host()}{product_element.product_image.url}"
+            image = request.build_absolute_uri(product_element.product_image.url)
         else:
             image = None
         products_dictionary["პროდუქტის სურათი"] = image
@@ -105,7 +105,7 @@ def product(request, product_id):
         "პროდუქტის ფასი": product_element.product_price,
     }
     if product_element.product_image:
-        image = f"{request.get_host()}{product_element.product_image.url}"
+        image = request.build_absolute_uri(product_element.product_image.url)
     else:
         image = None
     product_dictionary["პროდუქტის სურათი"] = image
