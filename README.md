@@ -53,9 +53,9 @@ Table Structures:
 
 **store_category:**
 
-| id | category_name | category_description | parent_category_id |
-|----|---------------|----------------------|--------------------|
-| 1  | _name_        | _description_        | _id_               |
+| id | category_name | category_description | parent_category_id | category_level |
+|----|---------------|----------------------|--------------------|----------------|
+| 1  | _name_        | _description_        | _id_               |   _number_     |
 
 
 **store_product:**
