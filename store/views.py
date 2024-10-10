@@ -73,8 +73,10 @@ def products(request):
 
         cat_list = []
         for cat_each in product_element.product_category.all():
-            cat_dict = {"ID": cat_each.id,
-                        "სახელი": cat_each.category_name}
+            cat_dict = {
+                "ID": cat_each.id,
+                "სახელი": cat_each.category_name
+            }
             cat_list.append(cat_dict)
 
         products_dictionary["პროდუქტის კატეგორია"] = cat_list
