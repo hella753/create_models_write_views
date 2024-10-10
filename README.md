@@ -79,7 +79,7 @@ Table Structures:
 | 1  | _date_     | _status_     |   _quantity_     | _total_     | _customer_     | _address_     | _id_              | _id_          |
 
 
-For testing purposes there are 7 products, 8 categories and 2 orders records in the database <3
+For testing purposes there are 8 products, 9 categories and 2 orders records in the database <3
 
 
 ## **Components** ##
