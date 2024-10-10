@@ -15,8 +15,9 @@ def index(request):
         )
         parent = each_category.parent_category
         if parent:
-            categories_dictionary["ზეკატეგორიის ID"] = parent.id
-            categories_dictionary["ზეკატეგორია"] = parent.category_name
+            categories_dictionary["ზეკატეგორია"]={}
+            categories_dictionary["ზეკატეგორია"]["ID"] = parent.id
+            categories_dictionary["ზეკატეგორია"]["სახელი"] = parent.category_name
 
         categories_list.append(categories_dictionary)
         categories_dictionary = {}
@@ -45,7 +46,9 @@ def products(request):
             .all()
             .filter(id=max_cat['id__max'])
         )
-        products_dictionary["პროდუქტის კატეგორია"] = (
+        products_dictionary["პროდუქტის კატეგორია"] = {}
+        products_dictionary["პროდუქტის კატეგორია"]["ID"] = cat.first().id
+        products_dictionary["პროდუქტის კატეგორია"]["სახელი"] = (
             cat
             .first()
             .category_name
@@ -67,8 +70,9 @@ def category(request, category_id):
     }
     parent = category_element.parent_category
     if parent:
-        categories_dictionary["ზეკატეგორიის ID"] = parent.id
-        categories_dictionary["ზეკატეგორია"] = parent.category_name
+        categories_dictionary["ზეკატეგორია"] = {}
+        categories_dictionary["ზეკატეგორია"]["ზეკატეგორიის ID"] = parent.id
+        categories_dictionary["ზეკატეგორია"]["ზეკატეგორიის სახელი"] = parent.category_name
 
     return JsonResponse(
         categories_dictionary,
@@ -86,7 +90,8 @@ def product(request, product_id):
     categories = product_element.product_category.all()
     category_list = []
     for cat in categories:
-        category_list.append(cat.category_name)
+        cat_dict = {"ID": cat.id, "სახელი": cat.category_name}
+        category_list.append(cat_dict)
 
     product_dictionary["პროდუქტის კატეგორიები"] = category_list
     return JsonResponse(
