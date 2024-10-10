@@ -11,6 +11,7 @@ class Category(models.Model):
         blank=True,
         verbose_name="ზეკატეგორია"
     )
+    category_level = models.IntegerField("დონე", null=True, blank=True)
 
     def __str__(self):
         return f"{self.category_name}"
