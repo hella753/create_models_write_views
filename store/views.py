@@ -15,9 +15,13 @@ def index(request):
         )
         parent = each_category.parent_category
         if parent:
-            categories_dictionary["ზეკატეგორია"]={}
-            categories_dictionary["ზეკატეგორია"]["ID"] = parent.id
-            categories_dictionary["ზეკატეგორია"]["სახელი"] = parent.category_name
+            parent_id = parent.id
+            parent_name = parent.category_name
+            parent_dict = {"ID": parent_id, "სახელი": parent_name}
+        else:
+            parent_dict = None
+
+        categories_dictionary["ზეკატეგორია"] = parent_dict
 
         categories_list.append(categories_dictionary)
         categories_dictionary = {}
@@ -39,20 +43,30 @@ def products(request):
         products_dictionary["პროდუქტის აღწერა"] = (
             product_element.product_description
         )
-        max_cat = product_element.product_category.all().aggregate(Max("id"))
+        if product_element.product_image:
+            image = f"{request.get_host()}{product_element.product_image.url}"
+        else:
+            image = None
+        products_dictionary["პროდუქტის სურათი"] = image
+
+        max_cat = (
+            product_element
+            .product_category
+            .all()
+            .aggregate(Max("category_level"))
+        )
         cat = (
             product_element
             .product_category
             .all()
-            .filter(id=max_cat['id__max'])
+            .filter(category_level=max_cat['category_level__max'])
         )
-        products_dictionary["პროდუქტის კატეგორია"] = {}
-        products_dictionary["პროდუქტის კატეგორია"]["ID"] = cat.first().id
-        products_dictionary["პროდუქტის კატეგორია"]["სახელი"] = (
-            cat
-            .first()
-            .category_name
-        )
+        cat_list = []
+        for cat_each in cat:
+            cat_dict = {"ID": cat_each.id, "სახელი": cat_each.category_name}
+            cat_list.append(cat_dict)
+        products_dictionary["პროდუქტის კატეგორია"] = cat_list
+
         products_list.append(products_dictionary)
         products_dictionary = {}
     return JsonResponse(
@@ -70,10 +84,13 @@ def category(request, category_id):
     }
     parent = category_element.parent_category
     if parent:
-        categories_dictionary["ზეკატეგორია"] = {}
-        categories_dictionary["ზეკატეგორია"]["ზეკატეგორიის ID"] = parent.id
-        categories_dictionary["ზეკატეგორია"]["ზეკატეგორიის სახელი"] = parent.category_name
+        parent_id = parent.id
+        parent_name = parent.category_name
+        parent_dict = {"ID": parent_id, "სახელი": parent_name}
+    else:
+        parent_dict = None
 
+    categories_dictionary["ზეკატეგორია"] = parent_dict
     return JsonResponse(
         categories_dictionary,
         json_dumps_params={'ensure_ascii': False}
@@ -85,8 +102,14 @@ def product(request, product_id):
     product_dictionary = {
         "პროდუქტის სახელი": product_element.product_name,
         "პროდუქტის აღწერა": product_element.product_description,
-        "პროდუქტის ფასი": product_element.product_price
+        "პროდუქტის ფასი": product_element.product_price,
     }
+    if product_element.product_image:
+        image = f"{request.get_host()}{product_element.product_image.url}"
+    else:
+        image = None
+    product_dictionary["პროდუქტის სურათი"] = image
+
     categories = product_element.product_category.all()
     category_list = []
     for cat in categories:
