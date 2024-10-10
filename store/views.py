@@ -25,6 +25,7 @@ def index(request):
 
         categories_list.append(categories_dictionary)
         categories_dictionary = {}
+
     return JsonResponse(
         categories_list,
         safe=False,
@@ -44,31 +45,43 @@ def products(request):
             product_element.product_description
         )
         if product_element.product_image:
-            image = request.build_absolute_uri(product_element.product_image.url)
+            image = (
+                request.build_absolute_uri(product_element.product_image.url)
+            )
         else:
             image = None
         products_dictionary["პროდუქტის სურათი"] = image
 
-        max_cat = (
-            product_element
-            .product_category
-            .all()
-            .aggregate(Max("category_level"))
-        )
-        cat = (
-            product_element
-            .product_category
-            .all()
-            .filter(category_level=max_cat['category_level__max'])
-        )
+        # თუ ზეკატეგორიებსაც ვამატებთ უშუალო კატეგორიად შეგვიძლია ამით
+        # დავადგინოთ ყველაზე ქვედა დონის მშობელი
+        # max_cat = (
+        #     product_element
+        #     .product_category
+        #     .all()
+        #     .aggregate(Max("category_level"))
+        # )
+        # cat = (
+        #     product_element
+        #     .product_category
+        #     .all()
+        #     .filter(category_level=max_cat['category_level__max'])
+        # )
+        # cat_list = []
+        # for cat_each in cat:
+        #     cat_dict = {"ID": cat_each.id, "სახელი": cat_each.category_name}
+        #     cat_list.append(cat_dict)
+
         cat_list = []
-        for cat_each in cat:
-            cat_dict = {"ID": cat_each.id, "სახელი": cat_each.category_name}
+        for cat_each in product_element.product_category.all():
+            cat_dict = {"ID": cat_each.id,
+                        "სახელი": cat_each.category_name}
             cat_list.append(cat_dict)
+
         products_dictionary["პროდუქტის კატეგორია"] = cat_list
 
         products_list.append(products_dictionary)
         products_dictionary = {}
+
     return JsonResponse(
         products_list,
         safe=False,
@@ -91,6 +104,7 @@ def category(request, category_id):
         parent_dict = None
 
     categories_dictionary["ზეკატეგორია"] = parent_dict
+
     return JsonResponse(
         categories_dictionary,
         json_dumps_params={'ensure_ascii': False}
@@ -113,10 +127,34 @@ def product(request, product_id):
     categories = product_element.product_category.all()
     category_list = []
     for cat in categories:
-        cat_dict = {"ID": cat.id, "სახელი": cat.category_name}
+        cat_dict = {
+            "ID": cat.id,
+            "სახელი": cat.category_name,
+            "უშუალო მშობელი": True,
+            "დონე": cat.category_level
+        }
         category_list.append(cat_dict)
 
+        # გამოვიტანოთ მშობლის მშობელი კატეგორიებიც.
+        # საჭირო არ გახდება თუ ადმინში მშობელ კატეგორიებსაც მოვნიშნავთ.
+        cat_p = cat.parent_category
+        while cat_p:
+            cat_dict = {
+                "ID": cat_p.id,
+                "სახელი": cat_p.category_name,
+                "დონე": cat_p.category_level
+            }
+            if cat_dict not in category_list:
+                category_list.append(cat_dict)
+            cat_p = cat_p.parent_category
+
+    # დავასორტიროთ რომ იერარქიულად ბოლოს პირველი დონე მოხვდეს
+    def sort_function(x):
+        return x["დონე"]
+    category_list.sort(key=sort_function, reverse=True)
+
     product_dictionary["პროდუქტის კატეგორიები"] = category_list
+
     return JsonResponse(
         product_dictionary,
         json_dumps_params={'ensure_ascii': False}
